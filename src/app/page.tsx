@@ -115,6 +115,54 @@ const categories = [
   },
 ];
 
+const categoryGuides = [
+  {
+    category: "건강 루틴",
+    keyword: "혈당 관리",
+    title: "식후 혈당 스파이크를 줄이는 식사 순서 5가지",
+    excerpt:
+      "무엇을 먹을지보다 어떤 순서로 먹을지가 먼저입니다. 오늘 식사부터 적용할 수 있는 현실적인 방법을 정리했어요.",
+    tone: "mint",
+    number: "01",
+  },
+  {
+    category: "이너뷰티",
+    keyword: "피부 장벽",
+    title: "피부 장벽이 무너졌을 때 먼저 바꿔야 할 저녁 습관",
+    excerpt:
+      "화장품을 더하기 전에 수면과 수분, 실내 환경을 점검하는 순서를 알려드립니다.",
+    tone: "peach",
+    number: "02",
+  },
+  {
+    category: "AI 콘텐츠",
+    keyword: "ChatGPT 블로그",
+    title: "내 건강 경험을 블로그 글로 바꾸는 AI 질문 7단계",
+    excerpt:
+      "과장 없이 경험은 살리고, 검색되는 제목과 읽히는 구조를 만드는 프롬프트를 공개합니다.",
+    tone: "lilac",
+    number: "03",
+  },
+  {
+    category: "건강 패시브인컴",
+    keyword: "웰니스 수익화",
+    title: "건강 패시브인컴, 무엇부터 콘텐츠로 만들어야 할까?",
+    excerpt:
+      "내가 이미 알고 있는 루틴을 글, 가이드, 추천 콘텐츠로 연결하는 가장 작은 시작점입니다.",
+    tone: "butter",
+    number: "04",
+  },
+  {
+    category: "웰니스 마케팅",
+    keyword: "건강 콘텐츠",
+    title: "신뢰를 잃지 않는 건강 제품 추천 콘텐츠 작성법",
+    excerpt:
+      "효능을 단정하지 않으면서도 독자가 행동하게 만드는 경험·근거·CTA의 배치법을 살펴봅니다.",
+    tone: "forest",
+    number: "05",
+  },
+];
+
 const pathSteps = [
   {
     number: "01",
@@ -210,13 +258,13 @@ export default function Home() {
               </div>
               <div className={styles.heroTrust}>
                 <div className={styles.avatarStack} aria-hidden="true">
-                  <span>J</span>
-                  <span>S</span>
                   <span>H</span>
+                  <span>B</span>
+                  <span>AI</span>
                 </div>
                 <p>
-                  <strong>4,800+</strong>
-                  <span>명의 웰니스 메이트가 함께 읽어요</span>
+                  <strong>검색에서 발견되고, 경험으로 신뢰받는 콘텐츠</strong>
+                  <span>건강 · 뷰티 · AI · 패시브인컴을 한 흐름으로 연결해요</span>
                 </p>
               </div>
             </div>
@@ -390,6 +438,77 @@ export default function Home() {
                 </a>
               );
             })}
+          </div>
+        </section>
+
+        <section className={styles.contentHubSection} id="insights">
+          <div className={styles.contentHubIntro}>
+            <div>
+              <p className={styles.sectionKicker}>WELLSET CONTENT HUB</p>
+              <h2>
+                찾고 있던 답에서
+                <br />
+                <em>나만의 건강 자산</em>으로.
+              </h2>
+            </div>
+            <p>
+              검색으로 들어와 한 편을 읽고 끝나지 않도록, 생활 속 질문을
+              건강 루틴과 콘텐츠 실행으로 연결합니다.
+            </p>
+          </div>
+
+          <nav className={styles.categoryTabs} aria-label="콘텐츠 카테고리">
+            <a href="#guide-health">건강 루틴</a>
+            <a href="#guide-beauty">이너뷰티</a>
+            <a href="#guide-ai">AI 콘텐츠</a>
+            <a href="#guide-income">건강 패시브인컴</a>
+            <a href="#guide-marketing">웰니스 마케팅</a>
+          </nav>
+
+          <div className={styles.guideGrid}>
+            {categoryGuides.map((guide, index) => (
+              <article
+                id={
+                  ["guide-health", "guide-beauty", "guide-ai", "guide-income", "guide-marketing"][
+                    index
+                  ]
+                }
+                className={`${styles.guideCard} ${styles[guide.tone]}`}
+                key={guide.title}
+              >
+                <a href="#newsletter" aria-label={`${guide.title} 읽기`}>
+                  <div className={styles.guideMeta}>
+                    <span>{guide.category}</span>
+                    <span>{guide.number}</span>
+                  </div>
+                  <span className={styles.searchKeyword}>
+                    사람들이 찾는 질문 · {guide.keyword}
+                  </span>
+                  <h3>{guide.title}</h3>
+                  <p>{guide.excerpt}</p>
+                  <span className={styles.guideLink}>
+                    가이드 읽기
+                    <ArrowUpRight size={17} />
+                  </span>
+                </a>
+              </article>
+            ))}
+          </div>
+
+          <div className={styles.leadMagnet}>
+            <div className={styles.leadMagnetBadge}>
+              <span>FREE</span>
+              GUIDE
+            </div>
+            <div className={styles.leadMagnetCopy}>
+              <span>WELLSET STARTER KIT</span>
+              <strong>내 경험을 첫 웰니스 콘텐츠로 만드는 10가지 질문</strong>
+              <p>주제 찾기부터 검색형 제목, 자연스러운 CTA까지 한 번에 시작하세요.</p>
+            </div>
+            <a href="#newsletter">
+              무료로 받아보기
+              <ArrowRight size={18} />
+            </a>
           </div>
         </section>
 
