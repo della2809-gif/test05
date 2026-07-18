@@ -1,0 +1,16 @@
+geniea_db_batches/
+geniea_outputs/
+geniea_thread_memory/
+knowledge-wiki/
+docs/
+00_decisions/
+02_todo/
+04_docs/
+.hermes/
+.tmp-knowledge-mcp/
+*.md
+!README.md
+scripts/*
+!scripts/check-secrets.mjs
+!scripts/setup-git-hooks.mjs
+e2e/

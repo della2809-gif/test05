@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>딸깍의 기술 — 지니아 팀 AX 교육</title>
+<style>
+/* ============ 리셋 & 베이스 ============ */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0E1116;
+  --bg2:#151A22;
+  --ink:#EFECE5;
+  --sub:#9AA3AF;
+  --dim:#6B7480;
+  --accent:#FF8A3D;
+  --accent-dim:#B8641F;
+  --line:#242B36;
+  --mono:"SF Mono",Menlo,Consolas,monospace;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{
+  font-family:-apple-system,"Apple SD Gothic Neo",Pretendard,"Noto Sans KR",sans-serif;
+  color:var(--ink);
+  word-break:keep-all;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ============ 스테이지 & 스케일 ============ */
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none}
+#deck{position:relative;width:1600px;height:900px;flex:none;transform-origin:center center}
+
+/* ============ 슬라이드 공통 ============ */
+.slide{
+  position:absolute;inset:0;
+  padding:88px 118px;
+  display:none;
+  flex-direction:column;
+  background:var(--bg);
+}
+.slide.active{display:flex;animation:fadein .28s ease}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.notes{display:none}
+
+.kicker{
+  font-size:21px;font-weight:700;letter-spacing:.24em;
+  color:var(--accent);text-transform:uppercase;
+  margin-bottom:30px;
+}
+h1{
+  font-size:62px;line-height:1.34;font-weight:800;
+  letter-spacing:-0.015em;max-width:1340px;
+}
+h1 .acc{color:var(--accent)}
+.body{margin-top:52px;flex:1;display:flex;flex-direction:column;justify-content:flex-start}
+
+/* 불릿 */
+ul.bul{list-style:none}
+ul.bul li{
+  position:relative;padding-left:56px;
+  font-size:38px;line-height:1.5;color:#DCD9D1;
+  margin-bottom:34px;
+}
+ul.bul li::before{
+  content:"";position:absolute;left:0;top:.72em;
+  width:28px;height:4px;background:var(--accent);border-radius:2px;
+}
+ul.plain{list-style:none}
+ul.plain li{font-size:38px;line-height:1.55;color:#DCD9D1;margin-bottom:30px}
+strong{font-weight:800;color:var(--ink)}
+.body .hi{color:var(--accent);font-weight:800}
+
+/* 인용 블록 (통일 스타일) */
+.quote{
+  border-left:6px solid var(--accent);
+  padding:8px 0 8px 40px;
+  font-size:46px;line-height:1.45;font-weight:800;
+  margin-bottom:48px;
+}
+.quote .qm{color:var(--accent)}
+
+/* ============ 표지 ============ */
+.t-cover{justify-content:center}
+.t-cover .cover-kicker{
+  font-size:26px;font-weight:700;letter-spacing:.3em;color:var(--accent);margin-bottom:44px;
+}
+.t-cover .cover-title{
+  font-size:150px;line-height:1.12;font-weight:800;letter-spacing:-0.02em;
+}
+.t-cover .cover-meta{
+  margin-top:56px;font-size:32px;line-height:1.7;color:var(--sub);font-weight:500;
+}
+.t-cover .cursorline{
+  position:absolute;right:118px;bottom:88px;
+  font-family:var(--mono);font-size:44px;color:var(--accent);letter-spacing:.02em;
+}
+.caret{animation:blink 1.05s steps(1) infinite}
+@keyframes blink{0%,55%{opacity:1}56%,100%{opacity:0}}
+
+/* ============ 디바이더 ============ */
+.t-divider{justify-content:center;align-items:flex-start}
+.t-divider h1{font-size:76px;line-height:1.36;max-width:1360px}
+.t-divider .rule{width:120px;height:6px;background:var(--accent);border-radius:3px;margin-bottom:52px}
+.t-divider .dv-body{margin-top:58px;font-size:38px;line-height:1.7;color:var(--sub)}
+.t-divider .dv-body strong{color:var(--ink)}
+.t-divider .dv-body .hi{color:var(--accent);font-weight:800}
+.t-divider ul.plain li{font-size:36px;margin-bottom:20px}
+.blank{
+  display:inline-block;min-width:150px;border-bottom:3px solid var(--dim);
+  height:1em;vertical-align:baseline;
+}
+
+/* ============ 큰활자 (슬로건) ============ */
+.t-big{justify-content:center;align-items:center;text-align:center}
+.t-big .rule{width:120px;height:6px;background:var(--accent);border-radius:3px;margin:0 auto 60px}
+.t-big h1{font-size:80px;line-height:1.42;max-width:1330px;margin:0 auto}
+.t-big .after{margin-top:64px;font-size:36px;color:var(--sub);line-height:1.7}
+
+/* ============ 질문 ============ */
+.t-question{justify-content:center}
+.t-question .qmark{
+  font-size:30px;font-weight:800;color:var(--accent);
+  letter-spacing:.24em;margin-bottom:36px;
+}
+.t-question h1{font-size:68px;line-height:1.38;max-width:1340px}
+.t-question .q-body{margin-top:64px;font-size:40px;line-height:1.75;color:var(--sub)}
+.t-question .q-body strong{color:var(--ink)}
+.t-question .words{
+  margin-top:64px;font-size:44px;line-height:2;font-weight:700;color:var(--ink);
+}
+.t-question .words .sep{color:var(--dim);font-weight:400;padding:0 6px}
+
+/* ============ 표 ============ */
+table{width:100%;border-collapse:collapse}
+th{
+  text-align:left;font-size:28px;font-weight:700;letter-spacing:.04em;
+  color:var(--sub);padding:0 30px 20px;border-bottom:3px solid var(--accent);
+}
+td{
+  font-size:33px;line-height:1.5;color:#DCD9D1;
+  padding:27px 30px;border-bottom:1px solid var(--line);vertical-align:top;
+}
+td strong{color:var(--ink)}
+td .hi{color:var(--accent);font-weight:800}
+table.dense td{padding:16px 30px;font-size:33px}
+table.muted th{border-bottom-color:var(--dim)}
+table.muted td{color:var(--sub)}
+table.muted td strong{color:#C4C9D1;font-weight:700}
+.tfoot{
+  margin-top:44px;font-size:36px;font-weight:800;text-align:center;color:var(--ink);
+}
+.tfoot .hi{color:var(--accent)}
+col.c-half{width:50%}
+
+/* 8칸 그리드 (위임 프레임) */
+.grid8{display:grid;grid-template-columns:1fr 1fr;gap:16px 22px;margin-top:44px}
+.grid8 .cell{
+  border:1px solid var(--line);border-radius:10px;
+  padding:20px 28px;background:var(--bg2);
+  display:flex;align-items:baseline;gap:24px;
+}
+.grid8 .num{font-family:var(--mono);font-size:20px;color:var(--accent);flex:none;transform:translateY(-2px)}
+.grid8 .k{font-size:29px;font-weight:800;flex:none;min-width:230px}
+.grid8 .v{font-size:24px;color:var(--sub);line-height:1.45}
+.grid8 .fill{flex:1;border-bottom:2px solid #3A4250;height:1.1em;align-self:flex-end;margin-bottom:6px}
+.task-line{
+  margin-top:44px;font-size:32px;font-weight:700;color:var(--sub);
+}
+.task-line .blank{min-width:320px}
+
+/* ============ 데모 ============ */
+.t-demo{justify-content:center;align-items:center;text-align:center}
+.t-demo h1{font-size:66px;max-width:1340px;margin:0 auto}
+.t-demo .badge{
+  display:inline-block;margin-bottom:52px;
+  border:2px solid var(--accent);color:var(--accent);
+  font-size:26px;font-weight:800;letter-spacing:.18em;
+  padding:14px 38px;border-radius:999px;
+}
+.t-demo .badge .dot{
+  display:inline-block;width:12px;height:12px;border-radius:50%;
+  background:var(--accent);margin-right:14px;
+  animation:blink 1.2s steps(1) infinite;vertical-align:2px;
+}
+.t-demo .d-quote{
+  margin-top:56px;font-size:52px;font-weight:800;line-height:1.4;
+}
+.t-demo .d-quote .qm{color:var(--accent)}
+.t-demo .d-lines{margin-top:52px;font-size:38px;line-height:1.8;color:var(--sub)}
+.t-demo .d-lines strong{color:var(--ink)}
+.t-demo .screen{
+  margin-top:56px;font-size:26px;color:var(--dim);letter-spacing:.08em;
+}
+.t-demo .mono{font-family:var(--mono);color:var(--accent)}
+
+/* ============ 대비 (무엇 vs 왜) ============ */
+.contrast{margin:20px 0 60px}
+.contrast .row{font-size:56px;font-weight:800;line-height:1.5;margin-bottom:26px}
+.contrast .no{color:var(--dim);text-decoration:line-through;text-decoration-color:var(--dim);text-decoration-thickness:4px}
+.contrast .mark{font-size:44px;margin-left:20px;text-decoration:none;display:inline-block}
+.contrast .yes{color:var(--ink)}
+.contrast .yes .mark{color:var(--accent)}
+
+/* ============ 루프 그래픽 ============ */
+.loop{display:flex;align-items:center;gap:22px;margin:28px 0 64px;flex-wrap:nowrap}
+.loop .chip{
+  border:2px solid var(--accent);border-radius:12px;
+  padding:22px 40px;font-size:38px;font-weight:800;flex:none;
+}
+.loop .arw{font-size:40px;color:var(--dim);flex:none}
+.loop .back{font-size:44px;color:var(--accent);flex:none}
+
+/* 시나리오 카드 */
+.scenarios{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:60px}
+.scn{border:1px solid var(--line);border-radius:14px;background:var(--bg2);padding:44px 46px}
+.scn .t{font-size:24px;font-weight:800;color:var(--accent);letter-spacing:.14em;margin-bottom:24px}
+.scn .q{font-size:36px;font-weight:800;line-height:1.45;margin-bottom:28px}
+.scn .a{font-size:30px;color:var(--sub);line-height:1.6}
+
+/* 정의 카드 */
+.defcard{
+  border:1px solid var(--line);border-left:6px solid var(--accent);
+  background:var(--bg2);border-radius:0 12px 12px 0;
+  padding:38px 46px;margin-bottom:56px;
+  font-size:40px;line-height:1.6;
+}
+.lead-label{
+  font-size:26px;font-weight:700;letter-spacing:.14em;color:var(--sub);margin-bottom:28px;
+}
+
+/* 마무리 문장 */
+.closing{margin-top:auto;font-size:34px;font-weight:800;color:var(--ink)}
+.closing .hi{color:var(--accent)}
+
+/* ============ 크롬 (카운터/진행/노트/힌트) ============ */
+#counter{
+  position:fixed;right:26px;bottom:20px;z-index:40;
+  font-family:var(--mono);font-size:15px;color:var(--dim);
+  pointer-events:none;
+}
+#hint{
+  position:fixed;left:26px;bottom:20px;z-index:40;
+  font-size:13px;color:#3C434E;letter-spacing:.06em;pointer-events:none;
+}
+#bar{
+  position:fixed;left:0;bottom:0;height:3px;background:var(--accent);
+  width:0%;z-index:41;transition:width .25s ease;opacity:.85;
+}
+#notes{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  background:rgba(9,11,15,.97);
+  border-top:2px solid var(--accent);
+  padding:26px 44px 34px;
+  max-height:46vh;overflow-y:auto;
+  transform:translateY(105%);transition:transform .22s ease;
+  cursor:default;
+}
+#notes.on{transform:translateY(0)}
+#notesTitle{
+  font-family:var(--mono);font-size:13px;color:var(--accent);
+  letter-spacing:.16em;margin-bottom:14px;
+}
+#notesBody{font-size:17px;line-height:1.75;color:#C9CDD4;max-width:1200px}
+</style>
+</head>
+<body>
+<div id="stage">
+<div id="deck">
+
+<!-- ========== 1. 표지 ========== -->
+<section class="slide t-cover">
+  <div class="cover-kicker">지니아 팀 AX 교육</div>
+  <h1 class="cover-title">딸깍의 기술</h1>
+  <div class="cover-meta">2026. 7. 12.<br>김나연 · 위시켓</div>
+  <div class="cursorline">딸깍<span class="caret">_</span></div>
+  <aside class="notes">[0:00 시작] 인사와 자기소개는 짧게. "오늘 제목이 좀 이상하죠? '딸깍'이 뭔지, 3시간 뒤에는 다들 웃으면서 이해하실 겁니다." 표지의 AX가 뭔지는 아직 풀지 않는다 — 잠시 뒤 목표 슬라이드에서 해소한다.</aside>
+</section>
+
+<!-- ========== 2. 질문 ========== -->
+<section class="slide t-question">
+  <div class="qmark">QUESTION</div>
+  <h1>지금, 어떤 업무에 어떤 AI를<br>어떻게 쓰고 계세요?</h1>
+  <div class="q-body">한 분씩 듣겠습니다</div>
+  <aside class="notes">한 명씩 돌아가며 듣고 화이트보드에 전부 적는다 — 진행 지시는 화면에 띄우지 않는다. "이 목록, 지우지 않습니다 — 마지막에 다시 씁니다"라고 예고. 안 쓰는 분에게는 "오늘 끝나면 뭐부터 시킬지 정해서 나가시면 됩니다"로 환영. 여기서 나온 답변 수준이 이후 강의 눈높이 기준이 된다. 오프닝은 15분 — 0:15 전에 다음 장으로.</aside>
+</section>
+
+<!-- ========== 3. 메시지 ========== -->
+<section class="slide">
+  <h1>방금 적으신 그 목록,<br>오늘 끝나면 다르게 보일 겁니다</h1>
+  <div class="body">
+    <div class="defcard"><strong>AX = AI Transformation</strong> — 일하는 방식을 AI 중심으로 바꾸는 것</div>
+    <div class="lead-label">오늘의 목표 3가지</div>
+    <ul class="plain">
+      <li>① 일하는 방식의 변화</li>
+      <li>② 지니아 가치의 이해</li>
+      <li>③ 인수인계용 개발 어휘</li>
+    </ul>
+    <div class="closing">성공 기준: <span class="hi">"AI를 어떻게 더 잘 쓸지 알겠다"</span></div>
+  </div>
+  <aside class="notes">화이트보드 목록을 손으로 가리키며 시작한다. 표지의 AX를 여기서 한 줄로 정의하고 넘어간다. "외우실 것 없습니다. 끝났을 때 '내가 AI를 어떻게 더 잘 쓸 수 있는지 알겠다'는 감각 하나면 성공입니다."</aside>
+</section>
+
+<!-- ========== 4. 디바이더 ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1><span class="acc">1부.</span> AI의 변화 —<br>채팅에서 '딸깍'까지</h1>
+  <aside class="notes">[목표 경과 0:15] 가볍게 몸 푸는 섹션(10분). "GPT 처음 쓰고 '와' 했던 순간, 다들 있으시죠? 언제였어요?" 한두 명 답을 듣고 시작한다.</aside>
+</section>
+
+<!-- ========== 5. 메시지 ========== -->
+<section class="slide">
+  <h1>AI는 '답해주는 조수'에서<br>'일해오는 팀원'으로 바뀌고 있다</h1>
+  <div class="body">
+    <ul class="bul">
+      <li><strong>검색</strong> — 내가 다 한다</li>
+      <li><strong>채팅</strong> — 내가 일하고, AI는 조수</li>
+      <li><strong>에이전트</strong> — AI가 일하고, 나는 검수자</li>
+      <li><strong class="hi">그 다음은?</strong></li>
+    </ul>
+  </div>
+  <aside class="notes">3단계를 순서대로 짚으며 "주어가 바뀌는 것"을 강조한다. 채팅까지는 내가 일하고, 에이전트부터 AI가 일한다. "그 다음은 뭘까요? 시키지 않아도 알아서 발견하고 제안하는 단계" — 참가자 의견을 먼저 듣고 정리한다.</aside>
+</section>
+
+<!-- ========== 6. 메시지 (큰활자) ========== -->
+<section class="slide t-big">
+  <div class="rule"></div>
+  <h1><span class="acc">"</span>딸깍만 하고 싶다.<br>제발 알아서 해줘!<span class="acc">"</span></h1>
+  <aside class="notes">"우스갯소리 같지만 지금 전 세계 AI 투자가 전부 이 한 문장을 향해 갑니다." 웃음이 나오면 성공. 전환 멘트: "그런데 '알아서 해줘'가 실제로 되려면, AI에게 뭘 줘야 할까요?" → 2부로. — 헤드라인: "딸깍만 하고 싶다"는 농담이 아니라 수조 원이 움직이는 방향이다.</aside>
+</section>
+
+<!-- ========== 7. 디바이더 ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1><span class="acc">2부.</span> '알아서 해줘'가 되려면,<br>AI에게 뭘 줘야 할까?</h1>
+  <aside class="notes">[목표 경과 0:25] 질문형 디바이더. 답을 바로 주지 말고 2~3초 멈춘 뒤 넘어간다. "오늘 3시간에서 제일 중요한 30분이 지금부터입니다." (2부는 30분 — 0:55에 3부 진입이 목표)</aside>
+</section>
+
+<!-- ========== 8. 메시지 ========== -->
+<section class="slide">
+  <h1>AI의 실력 = <span class="acc">모델 성능 × 컨텍스트 품질</span></h1>
+  <div class="body">
+    <ul class="bul">
+      <li>모델 = GPT·클로드 같은 AI 엔진 그 자체</li>
+      <li>컨텍스트 = 답 직전 AI 손에 쥔 모든 정보</li>
+      <li>지시문 + 대화 + 첨부 자료, 전부</li>
+      <li>모델은 누구나 같은 걸 쓴다 — <strong>차이는 전부 컨텍스트</strong></li>
+    </ul>
+  </div>
+  <aside class="notes">공식은 헤드라인에만 — 본문에서 반복하지 않는다. '모델'이 화면에 정의 없이 남지 않도록 첫 불릿으로 못 박는다. "같은 GPT, 같은 클로드를 쓰는데 왜 어떤 사람은 대단한 걸 만들고 어떤 사람은 뻔한 답만 받을까요?" 질문을 먼저 던지고 공식을 공개한다. 오늘 강의 전체가 이 공식의 뒷부분, 컨텍스트를 키우는 법이라고 못 박는다.</aside>
+</section>
+
+<!-- ========== 9. 메시지 ========== -->
+<section class="slide">
+  <h1>AI는 엄청나게 똑똑하지만,<br>우리 회사를 전혀 모르는 알바생이다</h1>
+  <div class="body">
+    <div class="quote"><span class="qm">"</span>세상에서 제일 똑똑한, 첫 출근 알바생<span class="qm">"</span></div>
+    <ul class="bul">
+      <li>세상 지식은 다 안다</li>
+      <li>지니아의 고객·상품·규칙은 모른다</li>
+      <li><strong>넣어준 만큼만 일한다</strong></li>
+    </ul>
+  </div>
+  <aside class="notes">"첫날 온 알바생에게 '알아서 해줘' 하면 어떻게 되죠?" 웃음 포인트. 핵심은 "우리가 넣어준 만큼만 일한다"는 문장. 그리고 복선: "그럼 안 넣어준 걸 물으면 어떻게 될까요? 이건 뒤에서 직접 보여드립니다."</aside>
+</section>
+
+<!-- ========== 10. 메시지 ========== -->
+<section class="slide">
+  <h1>컨텍스트는 책상이다 — 무한하지 않고,<br>새 채팅마다 싹 치워진다</h1>
+  <div class="body">
+    <ul class="bul">
+      <li>책상 크기에는 한계가 있다</li>
+      <li>뭘 올릴지 고르는 게 기술</li>
+      <li>새 채팅 = 책상 싹 비우기</li>
+      <li>그래서 <strong>어딘가에 적어둬야 한다</strong></li>
+    </ul>
+  </div>
+  <aside class="notes">비유는 헤드라인에만 — 본문에서 반복하지 않는다. "새 채팅 열면 왜 다 까먹어요?"라는 흔한 질문의 답이 이 장이다. 두 개의 복선을 심는다 — "뭘 올릴지 고르는 기술은 5부에서, '어딘가에 적어두는 법'은 바로 다음 3부에서 다룹니다." 전환: "그럼 그 책상 위에 뭘 올려야 일을 잘할까요?"</aside>
+</section>
+
+<!-- ========== 11. 질문 ========== -->
+<section class="slide t-question">
+  <div class="qmark">QUESTION</div>
+  <h1>내일 신규 팀원이 입사합니다 —<br>"이거 해줘~" 한마디로 일 잘하게 하려면?</h1>
+  <div class="q-body">떠오르는 대로 말씀해 주세요</div>
+  <aside class="notes">답변을 화이트보드에 받아 적는다 — 진행 지시는 화면에 띄우지 않는다. 목적, 원칙, 예시, 금지사항 등 8가지가 나오도록 유도 질문을 던진다("애매하면 뭘 보고 결정하죠?", "언제 끝났다고 하죠?"). 참가자 입에서 나온 말이 다음 장의 표와 겹칠수록 효과가 크다.</aside>
+</section>
+
+<!-- ========== 12. 표 (8칸 그리드) ========== -->
+<section class="slide">
+  <h1>위임 프레임 — 이 8가지 재료가 그대로 <span class="acc">'컨텍스트'</span>다</h1>
+  <div class="grid8">
+    <div class="cell"><span class="num">01</span><span class="k">목적·배경</span><span class="v">왜, 어디에 쓰이나</span></div>
+    <div class="cell"><span class="num">02</span><span class="k">일의 원칙</span><span class="v">뭘 중요하게 보나</span></div>
+    <div class="cell"><span class="num">03</span><span class="k">의사결정 기준</span><span class="v">갈리면 뭘 고르나</span></div>
+    <div class="cell"><span class="num">04</span><span class="k">실행 순서</span><span class="v">어떤 절차·어떤 자료</span></div>
+    <div class="cell"><span class="num">05</span><span class="k">좋은 예시</span><span class="v">"지난번처럼" 샘플</span></div>
+    <div class="cell"><span class="num">06</span><span class="k">금지사항</span><span class="v">절대 안 되는 것</span></div>
+    <div class="cell"><span class="num">07</span><span class="k">완료 기준</span><span class="v">언제 끝인가</span></div>
+    <div class="cell"><span class="num">08</span><span class="k">보고 방식</span><span class="v">막히면 언제 묻나</span></div>
+  </div>
+  <aside class="notes">화이트보드의 참가자 답변과 하나씩 매칭하며 공개한다. "방금 여러분이 말씀하신 것과 거의 같죠?" 이 표의 이름은 오늘 내내 '위임 프레임' 하나로만 부른다 — 유인물·실습에서도 같은 이름. 오늘의 뼈대이며 마지막 실습에서 그대로 다시 쓴다는 것을 예고한다.</aside>
+</section>
+
+<!-- ========== 13. 메시지 ========== -->
+<section class="slide">
+  <h1>여러분은 이미 위임을 할 줄 안다 —<br>대상이 사람에서 AI로 바뀌었을 뿐</h1>
+  <div class="body">
+    <div class="quote">온보딩 문서 <span class="qm">=</span> AI 시스템 프롬프트</div>
+    <ul class="bul">
+      <li>프롬프트 = AI에게 주는 지시문</li>
+      <li>위임 잘하기 = 컨텍스트 잘 주기</li>
+      <li>새 기술이 아니라, <strong>이미 하던 일</strong></li>
+    </ul>
+  </div>
+  <aside class="notes">2부의 결정적 한 방. "여러분은 이미 위임을 할 줄 압니다. 대상이 사람에서 AI로 바뀌었을 뿐입니다." '프롬프트'라는 용어를 여기서 정의하고 이후 계속 재사용한다. 예고: "이 위임 프레임, 나중에 시트로 한 장씩 드립니다. 마지막 실습에서 여러분이 직접 채우게 됩니다."</aside>
+</section>
+
+<!-- ========== 14. 디바이더 ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1><span class="acc">3부.</span> 팀원 5명이 AI에게<br>5가지 다른 지시를 하면?</h1>
+  <aside class="notes">[목표 경과 0:55] "각자 프롬프트를 잘 쓰면 끝일까요?" 개인의 기술에서 팀의 세팅으로 시선을 올리는 디바이더(3부는 20분). 답변 톤이 제각각인 상황을 상상하게 한 뒤 넘어간다.</aside>
+</section>
+
+<!-- ========== 15. 표 ========== -->
+<section class="slide">
+  <h1>오늘 다시 만날 4개 —<br>사람 세계의 장치가 AI 세계에도 그대로 있다</h1>
+  <div class="body">
+    <table>
+      <colgroup><col class="c-half"><col class="c-half"></colgroup>
+      <tr><th>사람 세계</th><th>AI 세계</th></tr>
+      <tr><td>온보딩 문서</td><td><span class="hi">시스템 프롬프트</span></td></tr>
+      <tr><td>업무 매뉴얼·SOP</td><td><span class="hi">스킬</span></td></tr>
+      <tr><td>팀원의 기억</td><td><span class="hi">메모리</span></td></tr>
+      <tr><td>사내 위키</td><td><span class="hi">RAG / 지식 저장소</span></td></tr>
+    </table>
+  </div>
+  <aside class="notes">왼쪽 열(사람 세계)을 먼저 다 보여주고 오른쪽을 하나씩 공개한다. 항목마다 실례 한 줄 — "메모리: 세션이 바뀌어도 '우리 팀은 존댓말 답변' 같은 걸 기억." 강조색인 이유는 구두로만 말한다(화면에는 띄우지 않는다): "이 4개는 오늘 강의에서 전부 다시 만납니다. 스킬은 6부에서, 메모리는 5부 기록 파트에서, 특히 RAG는 지니아의 심장이라 9부에서 재회합니다."</aside>
+</section>
+
+<!-- ========== 16. 표 (회색톤) ========== -->
+<section class="slide">
+  <h1>존재만 알면 되는 4개 —<br>외우지 마세요, 지도만 가져가세요</h1>
+  <div class="body">
+    <table class="muted dense">
+      <colgroup><col class="c-half"><col class="c-half"></colgroup>
+      <tr><th>사람 세계</th><th>AI 세계</th></tr>
+      <tr><td>직무·담당 역할</td><td><strong>서브에이전트</strong></td></tr>
+      <tr><td>"이럴 땐 꼭 이렇게"</td><td><strong>훅</strong></td></tr>
+      <tr><td>회의 하나의 맥락</td><td><strong>세션</strong></td></tr>
+      <tr><td>시스템 접근 권한</td><td><strong>MCP</strong></td></tr>
+    </table>
+    <div class="tfoot">외우지 마세요 — <span class="hi">"이런 게 있다"는 지도만</span></div>
+  </div>
+  <aside class="notes">앞 장과 달리 회색 톤으로, 힘을 빼고 빠르게. 항목당 실례 한 줄만 — "훅: 문서를 저장할 때마다 자동으로 맞춤법 검사가 돈다." "용어 시험 안 봅니다. 나중에 AI에게 '훅이 뭐야?'라고 물어볼 수 있을 정도면 충분합니다."</aside>
+</section>
+
+<!-- ========== 17. 질문 ========== -->
+<section class="slide t-question">
+  <div class="qmark">QUESTION</div>
+  <h1>우리 팀이라면, 이 여덟 가지 도구 중<br>뭐가 제일 먼저 필요할까요?</h1>
+  <div class="words">
+    시스템 프롬프트 <span class="sep">·</span> 스킬 <span class="sep">·</span> 메모리 <span class="sep">·</span> RAG<br>
+    서브에이전트 <span class="sep">·</span> 훅 <span class="sep">·</span> 세션 <span class="sep">·</span> MCP
+  </div>
+  <aside class="notes">3부 20분 구간의 호흡용 미니 인터랙션. 8개 단어를 화면에 다시 띄워둔 상태에서 묻는다 — 청중은 방금 처음 들은 신조어를 기억하지 못하므로 반드시 보이게. 말할 때도 "여덟 가지 도구"라고 지칭해 위임 프레임의 '8가지 재료'와 헷갈리지 않게 한다. 한두 명 의견만 듣는다(화이트보드 기록은 불필요). "고객 응대팀이면 스킬? 반복 보고가 많으면 훅?" 식으로 각자 업무에 대입하게 해, 신조어의 압도감을 '내 일'의 언어로 착지시킨다.</aside>
+</section>
+
+<!-- ========== 18. 디바이더 ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1><span class="acc">4부.</span> 이게 다 쌓이면, 무엇이 될까?</h1>
+  <div class="dv-body"><strong>4부</strong> — 위임의 재료 + 팀의 도구</div>
+  <aside class="notes">[목표 경과 1:15] 4부는 10분 — 짧은 개념 섹션임을 의식하고 속도를 낸다. "2부에서 위임의 재료를, 3부에서 팀의 도구를 배웠습니다. 이게 회사 단위로 다 모이면 뭐가 될까요? 이름을 하나 드리겠습니다." (시간 초과 시 3순위 축약 구간 — 정의와 함의 한 문장만 남기고 압축 가능)</aside>
+</section>
+
+<!-- ========== 19. 메시지 ========== -->
+<section class="slide">
+  <h1>이게 회사 단위로 쌓이면 <span class="acc">'온톨로지'</span>다</h1>
+  <div class="body">
+    <div class="defcard"><strong>온톨로지</strong> = 회사의 지식·일하는 방식·판단 기준이<br><strong>AI가 읽을 수 있는 형태</strong>로 구조화된 것</div>
+    <ul class="bul">
+      <li>2부(위임 재료) + 3부(도구) = 온톨로지</li>
+      <li>신규 입사자도 AI도, <strong>첫날부터 그 회사 사람처럼 일한다</strong></li>
+    </ul>
+  </div>
+  <aside class="notes">낯선 단어라 정의부터 준다. "방금 배운 위임의 재료들과 팀 세팅이 회사 단위로 모이면, 그게 온톨로지입니다." 함의 한 문장을 힘줘서: "온톨로지가 쌓인 회사는 사람도 AI도 첫날부터 그 회사 사람처럼 일합니다." 전환: "그런데 이게 실제로 '어디에' 쌓일까요? 휴식 후 실물을 보여드립니다."</aside>
+</section>
+
+<!-- ========== 20. 디바이더 (휴식) ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1>휴식 10분 —<br>돌아오면 실물을 보여드립니다</h1>
+  <div class="dv-body">
+    ☕ <strong>휴식 10분</strong><br><br>
+    재개: <span class="blank"></span> <span style="color:var(--dim);font-size:.75em">[시각 기입]</span><br>
+    돌아오면 — <span class="hi">실물 공개</span>
+  </div>
+  <aside class="notes">[목표 경과 1:25 — 재개 1:35] 재개 시각을 현장에서 채워 말한다. "돌아오시면 온톨로지가 쌓이는 '그 장소'의 실물을 보여드립니다"로 궁금증을 남기고 쉰다. 실물은 5부에서 두 번에 나눠 공개한다 — 1차: 코워크 라이브(폴더에서 일하는 장면), 2차: 지니아 폴더(쌓인 기록). 복귀 직후 5부 초반에 1차가 나오므로 약속이 늦지 않는다. 단, 시간이 밀려 25번 데모를 자를 예정이면 여기서 약속 문구를 '실물 화면(캡처)'로 낮춰 말한다 — '라이브'를 약속해 놓고 캡처를 보여주면 파기가 된다.</aside>
+</section>
+
+<!-- ========== 21. 디바이더 ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1><span class="acc">5부.</span> 폴더에서 일하는 AI —<br>클로드 코드 &amp; 클로드 코워크</h1>
+  <aside class="notes">[목표 경과 1:35] 후반부 시작(5부는 25분 — 2:00에 6부 진입 목표). "휴식 전에 약속한 실물, 이 파트에서 두 번 보여드립니다. 먼저 — 지금 쓰시는 채팅형 AI가 왜 답답한지 짚고, 그 해법을 본 다음 라이브로 갑니다." (라이브 앞에 세 장이 더 있으므로 '바로 라이브'라고 말하지 않는다.)</aside>
+</section>
+
+<!-- ========== 22. 메시지 ========== -->
+<section class="slide">
+  <h1>채팅형 AI에게 일 시키기 =<br>매번 처음 만난 사람에게 전화하기</h1>
+  <div class="body">
+    <ul class="bul">
+      <li>대화 끝나면 맥락 소멸</li>
+      <li>결과물은 복붙으로 이동</li>
+      <li>자료는 매번 재설명</li>
+    </ul>
+  </div>
+  <aside class="notes">청중 전원이 겪어본 답답함이라 공감대가 빠르다. "어제 그렇게 설명했는데 오늘 또 처음부터… 다들 있으시죠?" 이 한계 3가지가 다음 장에서 한 번에 해결된다고 예고한다.</aside>
+</section>
+
+<!-- ========== 23. 메시지 ========== -->
+<section class="slide">
+  <h1>폴더를 통째로 주면, <span class="acc">폴더가 곧 맥락</span>이 된다</h1>
+  <div class="body">
+    <div class="quote"><span class="qm">"</span>책상·캐비닛·매뉴얼을 통째로 주기<span class="qm">"</span></div>
+    <ul class="bul">
+      <li>지침·자료·이전 산출물을 AI가 직접 읽는다</li>
+      <li>결과도 파일로 남는다</li>
+      <li>다음 사람이 그대로 이어받는다</li>
+      <li><strong class="hi">온톨로지는 바로 이 폴더에 쌓인다</strong></li>
+    </ul>
+  </div>
+  <aside class="notes">오늘 후반부의 핵심 개념. 전화(채팅) vs 책상 통째로(폴더)의 대비를 몸짓까지 써서 크게. 4부 회수를 명확히: "휴식 전 질문의 답입니다 — 온톨로지가 쌓이는 곳이 바로 이 폴더입니다."</aside>
+</section>
+
+<!-- ========== 24. 표 ========== -->
+<section class="slide">
+  <h1>코드는 개발자용, 코워크는 여러분용 — <span class="acc">원리는 같다</span></h1>
+  <div class="body">
+    <table class="dense">
+      <tr><th style="width:18%"></th><th style="width:38%">클로드 코드</th><th style="width:44%">클로드 코워크</th></tr>
+      <tr><td style="color:var(--sub)">누구용</td><td>개발자</td><td><strong>비개발자</strong></td></tr>
+      <tr><td style="color:var(--sub)">대상</td><td>코드 폴더</td><td>문서·자료 폴더</td></tr>
+      <tr><td style="color:var(--sub)">하는 일</td><td>코드 수정·기능 개발</td><td>문서 정리·산출물</td></tr>
+      <tr><td style="color:var(--sub)">지니아</td><td><span class="hi">이걸로 만들어짐</span></td><td><span class="hi">오늘 여러분이 씀</span></td></tr>
+    </table>
+  </div>
+  <aside class="notes">마지막 행을 강조한다: "지니아가 클로드 코드로 만들어졌고 유지보수됩니다. 그리고 여러분은 오늘 실습에서 코워크를 직접 씁니다." 이름은 다르지만 '폴더에서 일하는 AI'라는 원리는 하나임을 짚는다.</aside>
+</section>
+
+<!-- ========== 25. 데모 ========== -->
+<section class="slide t-demo">
+  <div><span class="badge"><span class="dot"></span>LIVE — 실물 1차 공개</span></div>
+  <h1>딸깍 한 번 —<br>"이 폴더 안 문서들 요약해줘"</h1>
+  <div class="d-quote"><span class="qm">&gt;</span> <span class="mono">"이 폴더 안 문서들 요약해줘"</span></div>
+  <div class="screen">(화면 전환 — 코워크 라이브)</div>
+  <aside class="notes">1~2분 라이브 — 휴식 전 약속의 1차 이행이라고 명시한다: "약속한 실물, 첫 번째입니다." 예제 폴더를 코워크에 주고 한 마디만 시킨 뒤, 폴더를 읽고 결과 파일이 생기는 장면을 보여준다. "지시는 한 줄, 맥락은 폴더가 다 갖고 있으니까요. 이게 마지막 실습의 예고편입니다." (시간 초과 시 1순위 삭감 대상 — 이 데모를 자르고 캡처 한 장으로 대체. 자를 경우 20번 휴식 슬라이드의 약속 멘트를 미리 '실물 화면'으로 낮춰 말해 둔다.)</aside>
+</section>
+
+<!-- ========== 26. 메시지 ========== -->
+<section class="slide">
+  <h1>지니아 인수인계란,<br>이 폴더를 통째로 넘겨받는 것이다</h1>
+  <div class="body">
+    <ul class="bul">
+      <li>코드·문서·결정 기록이 전부 폴더 안에</li>
+      <li>클로드 코드가 읽고 여러분 질문에 답한다</li>
+      <li><strong>코드를 짜라는 게 아닙니다</strong></li>
+      <li>'질문하는 용도'는 비개발자도 쓴다</li>
+    </ul>
+  </div>
+  <aside class="notes">불안을 먼저 차단한다: "코드를 짜시라는 얘기가 아닙니다. '이 기능 어디서 처리돼?'라고 묻는 용도로는 비개발자도 클로드 코드를 씁니다." 복선: "그 질문에 쓸 어휘는 9부에서 지도로 드립니다."</aside>
+</section>
+
+<!-- ========== 27. 메시지 ========== -->
+<section class="slide">
+  <h1>대표님의 녹음 습관이 <span class="acc">온톨로지의 절반</span>이다</h1>
+  <div class="body">
+    <ul class="bul">
+      <li>나머지 절반: <strong>AI가 읽을 수 있게</strong> 쌓기</li>
+      <li>md(마크다운) = 사람·AI 공용 텍스트 (워드·PDF는 사람용)</li>
+      <li>녹음 → 텍스트 → "md로 정리해줘" → 폴더 저장</li>
+      <li>이 정리도 <strong class="hi">딸깍</strong></li>
+    </ul>
+  </div>
+  <aside class="notes">"대표님이 회의를 전부 녹음하고 기록하시는 것, 보셨죠? 그게 온톨로지의 절반입니다." md는 어렵게 설명하지 않는다 — 제목과 목록만 있는 순수 텍스트, AI가 가장 잘 읽고 직접 고칠 수도 있는 형식. 정리 자체도 AI에게 시키는 일이라는 점에서 '딸깍'을 재소환한다. 3부 회수 한 줄을 꼭 넣는다: "이렇게 폴더에 적어둔 기록이 곧 3부에서 본 '메모리'입니다 — 세션이 끝나도 팀이 기억하는 방법."</aside>
+</section>
+
+<!-- ========== 28. 메시지 ========== -->
+<section class="slide">
+  <h1>창고에 던져넣으면 망한다 —<br>서재처럼 쌓아야 한다</h1>
+  <div class="body">
+    <div class="quote">창고 <span class="qm">vs</span> 서재</div>
+    <ul class="bul">
+      <li>다 읽게 하면: 느리고, 비싸고, 놓친다</li>
+      <li>책상 크기의 한계 (2부의 그 책상)</li>
+      <li>서재: 목차가 있고, 안 보는 책은 서고로</li>
+    </ul>
+  </div>
+  <aside class="notes">2부 복선 회수를 명시적으로: "아까 책상 크기 기억하시죠? 무한정 쌓아서 다 읽게 하면 느려지고, 비싸지고, 오래된 정보와 새 정보가 섞여 중요한 걸 놓칩니다." 문제의식만 심고, 해법은 다음 장의 5원칙으로 넘긴다.</aside>
+</section>
+
+<!-- ========== 29. 표 ========== -->
+<section class="slide">
+  <h1>서재처럼 쌓는 <span class="acc">5가지 원칙</span></h1>
+  <div class="body">
+    <table class="dense">
+      <tr><th style="width:34%">원칙</th><th>방법</th></tr>
+      <tr><td><strong>원본·정리본 분리</strong></td><td>전문은 아카이브, AI에겐 정리본</td></tr>
+      <tr><td><strong>한 문서 한 주제</strong></td><td>대형 파일 대신 작은 파일 여러 개</td></tr>
+      <tr><td><strong>목차 파일</strong></td><td>INDEX.md에 한 줄 요약</td></tr>
+      <tr><td><strong>날짜·상태 명시</strong></td><td>파일명에 날짜, 뒤집힌 건 아카이브</td></tr>
+      <tr><td><strong>쓰기 전에 검색</strong></td><td>있으면 새로 만들지 말고 업데이트</td></tr>
+    </table>
+  </div>
+  <aside class="notes">표를 위에서 아래로 담백하게. 각 행에 지니아 예시 한 마디씩만 얹는다. "중복되고 모순된 문서는 사람도 헷갈리지만 AI는 더 헷갈립니다."</aside>
+</section>
+
+<!-- ========== 30. 메시지 ========== -->
+<section class="slide t-big">
+  <div class="rule"></div>
+  <h1 style="font-size:64px">남길 것은 "무엇을 했다"가 아니라<br>"왜 그렇게 결정했다"이다</h1>
+  <div class="contrast" style="margin-top:64px;margin-bottom:0">
+    <div class="row no">"무엇을 했다"<span class="mark">❌</span></div>
+    <div class="row yes">"왜 그렇게 결정했다"<span class="mark">⭕</span></div>
+  </div>
+  <div class="after">결정과 이유가 쌓여야<br>AI가 다음 판단을 대신한다</div>
+  <aside class="notes">5원칙의 뿌리가 되는 기준이라 단독 슬라이드로 힘을 준다. "'회의했음, 문서 수정함'은 쌓여도 소용없습니다. 'A안 대신 B안을 골랐다, 이유는 이것'이 쌓여야 AI가 다음번 비슷한 판단을 대신할 수 있습니다."</aside>
+</section>
+
+<!-- ========== 31. 데모 ========== -->
+<section class="slide t-demo">
+  <div><span class="badge">실물 2차 공개</span></div>
+  <h1>지니아 폴더에는 이미 이렇게 쌓이고 있다</h1>
+  <div class="d-lines">
+    <span class="mono">docs/</span> — 날짜별 업데이트 기록<br>
+    결정 기록 구조
+  </div>
+  <div class="screen">(화면 전환)</div>
+  <aside class="notes">휴식 전 약속의 2차 이행. 지니아 레포의 docs/ 폴더와 날짜별 업데이트 파일, 결정 기록 구조를 화면으로 훑는다. "방금 배운 5원칙이 이론이 아니라, 여러분이 넘겨받을 폴더에 이미 이렇게 적용돼 있습니다."</aside>
+</section>
+
+<!-- ========== 32. 메시지 (보안) ========== -->
+<section class="slide">
+  <h1>폴더를 통째로 주는 시대,<br>안전벨트는 <span class="acc">세 개</span>면 된다</h1>
+  <div class="body">
+    <ul class="plain">
+      <li>① <strong>회사 계정만</strong> — 무료 계정에 넣은 내용은 AI 학습 데이터로 들어갈 수 있다</li>
+      <li>② <strong>고객 정보는 치환</strong> — "홍길동 → 고객A"</li>
+      <li>③ <strong>애매하면 넣기 전에 확인</strong></li>
+    </ul>
+    <div class="closing">겁내지 마세요 — <span class="hi">벨트만 매면 안전합니다</span></div>
+  </div>
+  <aside class="notes">5부 서사의 마지막 문장으로 자연스럽게 잇는다: "폴더를 통째로 주는 시대니까, 벨트도 매야죠." ①은 '학습'이 '공부'로 들리지 않게 풀어 말한다: "무료 계정에 붙여넣은 우리 문서가, AI를 훈련시키는 재료로 흘러들어갈 수 있다는 뜻입니다." 보험 도메인을 콕 집는다 — 고객의 건강·보험 정보가 오가는 회사라는 점. 겁주기가 목적이 아니므로 반드시 "원칙만 지키면 안전합니다"로 닫는다. 이 장은 시간이 아무리 밀려도 절대 생략 금지.</aside>
+</section>
+
+<!-- ========== 33. 디바이더 ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1><span class="acc">6부.</span> 이 '일 잘하는 법'이,<br>시장에서 거래되기 시작했다</h1>
+  <aside class="notes">[목표 경과 2:00] 기어 변속 멘트(6부는 10분): "도구도 배웠고 안전하게 쓰는 법까지 배웠으니, 이제 이것들이 시장에서 무슨 일을 일으키고 있는지 봅시다." 여기서부터 톤을 올린다 — 상승 구간의 시작.</aside>
+</section>
+
+<!-- ========== 34. 메시지 ========== -->
+<section class="slide">
+  <h1>잘 만든 업무 매뉴얼이 다운로드된다 —<br>'일 잘하는 법'이 상품이 됐다</h1>
+  <div class="body">
+    <ul class="bul">
+      <li>스킬 = 일 잘하는 법의 패키지</li>
+      <li>공유되고, 거래된다</li>
+      <li>남의 스킬을 내 AI에 장착</li>
+      <li><strong class="hi">실행의 진입장벽이 무너진다</strong></li>
+    </ul>
+  </div>
+  <aside class="notes">3부 강조색 회수: "'스킬', 아까 그 지도에 있던 단어입니다." 비유로 풀기: "우리 회사 베테랑의 업무 매뉴얼을 남의 회사가 다운받아 자기 AI에 꽂는 겁니다." 상품이 된 것은 '일 잘하는 법'이고, 그 결과로 실행의 진입장벽이 무너진다 — 이 인과를 마지막 불릿에서 강조하고 다음 장의 역전으로 잇는다.</aside>
+</section>
+
+<!-- ========== 35. 메시지 ========== -->
+<section class="slide">
+  <h1>개발자가 아닌 여러분이, <span class="acc">개발을 한다면?</span></h1>
+  <div class="body" style="justify-content:center">
+    <div class="quote">디자이너가 아닌데, 디자인을 한다<span class="qm">?</span></div>
+    <div style="font-size:40px;line-height:1.6;color:#DCD9D1">폴더와 지시만 있으면 — <strong>실행은 AI가 한다</strong></div>
+  </div>
+  <aside class="notes">스토리 최고 상승점. 헤드라인(개발)을 던진 뒤 본문(디자인)으로 확장한다 — 같은 질문을 두 번 반복하지 않는다. 청중을 똑바로 보고 질문을 던진다. "방금 보신 클로드 코드가 바로 그 도구입니다. 폴더와 지시만 있으면 실행은 AI가 합니다." 여운을 남기고 — 다음 장에서 바로 찬물을 끼얹는다.</aside>
+</section>
+
+<!-- ========== 36. 디바이더 ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1><span class="acc">7부.</span> 그런데 —<br>왜, 여전히 사람인가?</h1>
+  <aside class="notes">[목표 경과 2:10] 질문형 디바이더 겸 긴장 조성(7부는 15분). 잠깐 답을 듣는 척한 뒤: "AI에게는 치명적인 습관이 하나 있습니다. 직접 보여드리죠." 바로 데모로 전환한다.</aside>
+</section>
+
+<!-- ========== 37. 데모 ========== -->
+<section class="slide t-demo">
+  <div><span class="badge"><span class="dot"></span>환각(할루시네이션) 시연</span></div>
+  <h1>AI는 모르면 '모른다' 하지 않고,<br>아주 자신 있게 지어낸다</h1>
+  <div class="d-lines">
+    존재하지 않는 보험 특약을 물으면 —<br>
+    그럴듯한 <strong>조항 번호까지</strong> 지어낸다
+  </div>
+  <div class="screen">(라이브 / 캡처)</div>
+  <aside class="notes">존재하지 않는 약관·특약을 묻고, AI가 조항 번호와 내용을 자신 있게 지어내는 장면을 보여준다. 라이브가 부담이면 준비한 캡처로. 2부 복선 회수: "아까 '안 넣어준 걸 물으면 어떻게 될까요?' 했던 질문의 답이 바로 이겁니다. 컨텍스트에 없으면 모르는 건데, 모른다고 말하지 않습니다."</aside>
+</section>
+
+<!-- ========== 38. 메시지 (큰활자) ========== -->
+<section class="slide t-big">
+  <div class="rule"></div>
+  <h1><span class="acc">"</span>AI가 그렇다고 했어요<span class="acc">"</span>는<br>면책이 되지 않는다</h1>
+  <aside class="notes">데모 직후, 헤드라인 한 문장만 크게 띄우고 3초 침묵한다. 그 후 한 문장만: "고객에게 나가는 정보는, 반드시 사람이 원문을 확인합니다." 보험 도메인에서 운영상 가장 치명적인 경고이므로 농담 없이 무겁게.</aside>
+</section>
+
+<!-- ========== 39. 메시지 ========== -->
+<section class="slide">
+  <h1>실행이 싸지면, <span class="acc">판단과 맥락</span>이 비싸진다</h1>
+  <div class="body">
+    <div class="lead-label">사람에게 남는 3가지</div>
+    <ul class="plain">
+      <li>① 무엇을 만들지 아는 것</li>
+      <li>② 좋고 나쁨을 알아보는 눈</li>
+      <li>③ 맥락을 언어화하는 능력</li>
+    </ul>
+  </div>
+  <aside class="notes">오늘의 핵심 명제 — 명제는 헤드라인에만 두고 본문은 3가지로 받는다. "그래서 사람의 역할이 사라지는 게 아니라 바뀌는 겁니다." ②를 짚을 때 직전 데모를 회수한다: "방금 환각을 걸러낸 그 눈이 바로 이겁니다." 이 3가지는 8부에서 그대로 다시 등장하니 또박또박.</aside>
+</section>
+
+<!-- ========== 40. 메시지 (슬로건) ========== -->
+<section class="slide t-big">
+  <div class="rule"></div>
+  <h1 style="font-size:72px">개발자를 이기는 게 아니라,<br>자기 도메인을 가장 잘 <span class="acc">언어화한 사람</span>이 이긴다</h1>
+  <aside class="notes">슬로건 단독 장표. 읽어주고 잠시 멈춘 뒤 전환 멘트: "이 말이 진짜인지, 증거를 보여드리겠습니다." → 8부.</aside>
+</section>
+
+<!-- ========== 41. 디바이더 ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1><span class="acc">8부.</span> 그 증거 —<br>지니아는 어떻게 만들어졌나</h1>
+  <aside class="notes">[목표 경과 2:25] 직전 슬로건을 받아서 연다(8부는 15분 — 2:40 종료): "증거를 보여드리겠다고 했죠. 지금부터가 그 증거입니다." 톤은 담담하게 — 사실 자체가 강하다.</aside>
+</section>
+
+<!-- ========== 42. 메시지 (큰활자) ========== -->
+<section class="slide t-big">
+  <div class="rule"></div>
+  <h1>개발을 전혀 모르는 사람이,<br><span class="acc">지니아를 구축했다</span></h1>
+  <aside class="notes">문장 하나만 크게 띄우고 발표자가 서사를 이끈다. 대표님이 어떤 상황에서 시작했는지, 무엇이 없었는지(개발 지식)를 담담하게. 과장하지 말 것 — 사실 자체가 충분히 강하다.</aside>
+</section>
+
+<!-- ========== 43. 메시지 ========== -->
+<section class="slide">
+  <h1>비결은 재능이 아니라,<br>세 가지 능력과 기록하는 습관이었다</h1>
+  <div class="body">
+    <ul class="plain">
+      <li>① 무엇이 필요한지 <strong>알았다</strong></li>
+      <li>② 맞는지 틀린지 <strong>알아봤다</strong></li>
+      <li>③ 집요하게 <strong>언어로 꺼냈다</strong></li>
+    </ul>
+    <div class="closing">그 녹음과 기록이 md가 되어 → <span class="hi">지니아의 온톨로지</span></div>
+  </div>
+  <aside class="notes">7부의 3능력을 문장 그대로 회수한다 — "방금 배운 세 가지, 기억나시죠? 대표님에게 그게 다 있었습니다." 5부 기록 파트 회수도 명시: "전부 녹음하고 기록하신 그 습관이 언어화의 실천이었고, 그 기록이 md가 되어 지니아 폴더에 쌓였습니다. 특별한 재능이 아니라 기록하는 습관입니다."</aside>
+</section>
+
+<!-- ========== 44. 데모 ========== -->
+<section class="slide t-demo">
+  <div><span class="badge"><span class="dot"></span>지니아 실물 시연</span></div>
+  <h1>이게 그 결과물입니다</h1>
+  <div class="d-lines">상담 화면 · 관리자 페이지</div>
+  <div class="screen">(화면 전환)</div>
+  <aside class="notes">상담 화면에서 실제 질문-답변 흐름, 관리자 페이지의 스크립트·FAQ 관리를 보여준다. 말은 아끼고 화면이 말하게 한다. 마무리 한 마디: "개발을 모르는 사람이, 이걸 만들었습니다."</aside>
+</section>
+
+<!-- ========== 45. 메시지 ========== -->
+<section class="slide">
+  <h1>대표님이 특별해서가 아니라, 방법이 존재해서<br>가능했다 — 이제 여러분이 이어받는다</h1>
+  <div class="body">
+    <div class="quote">재능이 아니라, <span class="qm">방법</span>이었다</div>
+    <div style="font-size:40px;line-height:1.75;color:#DCD9D1">
+      그 방법을 — <strong>오늘 여러분이 배웠습니다</strong><br>
+      이제 이 프로덕트를 <strong class="hi">여러분이 이어받습니다</strong>
+    </div>
+  </div>
+  <aside class="notes">감정적 정점. 천천히, 청중 한 명 한 명을 보며. "위임, 컨텍스트, 폴더, 기록 — 오늘 배우신 게 바로 그 방법의 전부입니다." 여기서 박수가 나와도 좋다. 잠시 쉬고 스트레치로 넘어간다.</aside>
+</section>
+
+<!-- ========== 46. 디바이더 (스트레치) ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1>3분만 몸을 풀겠습니다 —<br>그동안 유인물 두 장을 돌립니다</h1>
+  <div class="dv-body">
+    🙆 <strong>스트레치 3분</strong> · 유인물 2종 배포<br><br>
+    ① 개발 어휘 지도<br>
+    ② 위임 프레임 시트 (8가지 재료)<br><br>
+    돌아오면 — <span class="hi">인수인계의 지도</span>
+  </div>
+  <aside class="notes">[목표 경과 2:40 — 재개 2:43] 이 3분은 9부에서 차감한다(9부 20분 → 17분). 감정 정점 직후의 체력 회복 구간. 일어나서 몸을 풀게 하고 그 사이 유인물을 돌린다. "②번 시트, 아까 예고했던 그 위임 프레임입니다 — 잠시 후 실습에서 여러분이 직접 채웁니다." 재착석하면 바로 9부.</aside>
+</section>
+
+<!-- ========== 47. 디바이더 ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1><span class="acc">9부.</span> 코드를 짤 일은 없습니다 —<br>대신 지도를 드립니다</h1>
+  <aside class="notes">[목표 경과 2:43] 프레이밍이 전부인 디바이더(9부는 17분 — 스트레치 3분을 여기서 차감, 3:00에 실습 진입 목표). "AI에게 '이거 고쳐줘'라고 시키려면, 뭐가 어디에 있는지 말할 수 있어야 합니다." 5부에서 예고한 '질문에 쓸 어휘'가 바로 지금이라고 회수한다. 시험이 아니라 지도라는 점을 반복해 위축을 막는다.</aside>
+</section>
+
+<!-- ========== 48. 표 ========== -->
+<section class="slide" style="padding-top:72px">
+  <h1 style="font-size:54px">여러분이 매일 보는 화면 — 이 6개 단어면 그 뒤가 다 보인다</h1>
+  <div class="body" style="margin-top:40px">
+    <table class="dense">
+      <tr><th style="width:26%">단어</th><th>지니아에서는</th></tr>
+      <tr><td><strong>프론트엔드</strong></td><td>매일 보는 화면 — 상담·관리자</td></tr>
+      <tr><td><strong>백엔드</strong></td><td>화면 뒤 답변 조립 로직</td></tr>
+      <tr><td><strong>API</strong></td><td>주문서가 오가는 창구</td></tr>
+      <tr><td><strong>DB</strong></td><td>스크립트·FAQ·기록 창고</td></tr>
+      <tr><td><strong>RAG</strong></td><td>답하기 전 우리 자료 먼저 검색</td></tr>
+      <tr><td><strong>외부 AI 연동</strong></td><td>답변 하나하나가 외부 AI 호출 = 쓸수록 비용 발생</td></tr>
+    </table>
+  </div>
+  <aside class="notes">클러스터 순차 공개 — ①화면과 창구(프론트/백/API) 먼저, ②데이터와 답변(DB/RAG/외부 AI) 다음. 전부 지니아 실물로만 설명한다("관리자 페이지에서 저장하면 DB가 바뀝니다"). RAG에서 3부 회수: "아까 그 지도에 있던 단어입니다 — 그래서 스크립트 DB 관리가 답변 품질을 좌우합니다." 외부 AI 연동에서는 운영 포인트를 짚는다: "쓸수록 돈이 나가는 구조라, 인수인계 후 비용 관리 항목입니다."</aside>
+</section>
+
+<!-- ========== 49. 표 ========== -->
+<section class="slide">
+  <h1 style="font-size:54px">"고쳤는데 왜 안 바뀌어요?" — 나머지 3개 단어가 그 답이다</h1>
+  <div class="body" style="margin-top:44px">
+    <table>
+      <tr><th style="width:26%">단어</th><th>지니아에서는</th></tr>
+      <tr><td><strong>배포</strong></td><td>수정이 실서비스에 반영되는 과정</td></tr>
+      <tr><td><strong>깃</strong></td><td>모든 변경의 기록 — 타임머신</td></tr>
+      <tr><td><strong>레포지토리</strong></td><td>코드·문서·결정이 담긴 <strong>그 폴더</strong></td></tr>
+    </table>
+    <div class="tfoot">레포 = 5부의 그 폴더 = <span class="hi">인수인계의 실체</span></div>
+  </div>
+  <aside class="notes">헤드라인의 실제 질문("고쳤는데 왜 안 바뀌어요?")이 배포의 답임을 먼저 푼다. 마지막 행이 9단어 지도의 종착점: "레포지토리가 바로 5부에서 본 그 폴더고, 인수인계의 실체입니다." 손에 든 유인물 ①이 이 두 장과 같은 구성임을 안내한다.</aside>
+</section>
+
+<!-- ========== 50. 질문 ========== -->
+<section class="slide t-question">
+  <div class="qmark">QUESTION</div>
+  <h1>"답변이 이상하게 나온다" —<br>어디부터 의심할까요?</h1>
+  <div class="scenarios">
+    <div class="scn">
+      <div class="t">시나리오 ①</div>
+      <div class="q">답변이 이상하다</div>
+      <div class="a">→ 스크립트 DB? 프롬프트? AI 자체?</div>
+    </div>
+    <div class="scn">
+      <div class="t">시나리오 ②</div>
+      <div class="q">저장했는데 반영이 안 된다</div>
+      <div class="a">→ 어떤 단어로 물어볼까?</div>
+    </div>
+  </div>
+  <aside class="notes">정답 맞히기가 아니라 "어디를 의심할지 어휘로 말하는 연습"임을 먼저 밝힌다. 참가자가 방금 배운 단어(DB, 프롬프트, 배포)로 의심 지점을 말하면 크게 반겨준다. "이렇게 물을 수 있으면 인수인계 준비 끝입니다." (시간 초과 시 2순위 삭감 대상 — 이 시나리오 연습을 구두 1분으로 압축)</aside>
+</section>
+
+<!-- ========== 51. 디바이더 (실습 안내) ========== -->
+<section class="slide t-divider">
+  <div class="rule"></div>
+  <h1><span class="acc">10부.</span> 이제 직접 딸깍 해봅시다</h1>
+  <div class="dv-body" style="margin-top:48px">
+    <strong>10부 — 라이브 실습</strong><br><br>
+    <ul class="plain">
+      <li>① 과제 투표 (오프닝 목록에서)</li>
+      <li>② 지시문 공동 작성</li>
+      <li>③ 실행 &amp; 관전</li>
+      <li>④ 검수 &amp; 재위임</li>
+    </ul>
+    도구: 클로드 코워크 · <span class="hi">시트는 지금부터 씁니다</span>
+  </div>
+  <aside class="notes">[목표 경과 3:00] 실습 20분의 배분: ①투표 3분 → ②지시문 공동 작성 7분 → ③실행·관전 8분 → ④정리 2분. 실습은 시간이 밀려도 절대 삭제 금지 (밀렸으면 앞의 삭감 순서: 5부 코워크 데모 → 9부 시나리오 연습 → 4부 축약). 오프닝 화이트보드 목록을 가리킨다: "아까 '지우지 않는다'고 했죠? 지금 씁니다." 진행 방식 안내 — 노트북 1대 미러링, 대표 1명 조작, 전원이 함께 설계. "손에 든 위임 프레임 시트, 지금부터 각자 채우십니다."</aside>
+</section>
+
+<!-- ========== 52. 실습 (8칸 시트) ========== -->
+<section class="slide" style="padding-top:72px">
+  <div class="kicker" style="margin-bottom:22px">실습</div>
+  <h1 style="font-size:50px">위임 프레임 8가지 재료 — 여러분의 시트에, 여러분의 손으로</h1>
+  <div class="task-line">우리의 과제: <span class="blank"></span></div>
+  <div class="grid8" style="margin-top:32px">
+    <div class="cell"><span class="num">01</span><span class="k">목적·배경</span><span class="fill"></span></div>
+    <div class="cell"><span class="num">02</span><span class="k">일의 원칙</span><span class="fill"></span></div>
+    <div class="cell"><span class="num">03</span><span class="k">의사결정 기준</span><span class="fill"></span></div>
+    <div class="cell"><span class="num">04</span><span class="k">실행 순서</span><span class="fill"></span></div>
+    <div class="cell"><span class="num">05</span><span class="k">좋은 예시</span><span class="fill"></span></div>
+    <div class="cell"><span class="num">06</span><span class="k">금지사항</span><span class="fill"></span></div>
+    <div class="cell"><span class="num">07</span><span class="k">완료 기준</span><span class="fill"></span></div>
+    <div class="cell"><span class="num">08</span><span class="k">보고 방식</span><span class="fill"></span></div>
+  </div>
+  <aside class="notes">[7분 구간] 투표로 고른 과제를 8가지 재료에 채워간다 — 강사가 화이트보드에 받아 적고 대표가 타이핑, 나머지 전원은 자기 시트에 손으로 채운다. "한 줄 지시와 프레임 지시의 차이를 몸으로 느끼는 단계입니다." 과제가 라이브로 애매하면 백업 과제(지니아 FAQ 초안 10개)로 전환.</aside>
+</section>
+
+<!-- ========== 53. 실습 ========== -->
+<section class="slide">
+  <div class="kicker">실습</div>
+  <h1>실행하고, 관전하고,<br>아쉬우면 고쳐서 다시 시킨다</h1>
+  <div class="body" style="justify-content:center">
+    <div class="loop" style="margin-top:0">
+      <span class="chip">실행</span><span class="arw">→</span>
+      <span class="chip">관전</span><span class="arw">→</span>
+      <span class="chip">검수</span><span class="arw">→</span>
+      <span class="chip">재위임</span>
+    </div>
+    <div style="font-size:40px;line-height:1.75;color:#DCD9D1">
+      첫 결과가 아쉬우면 — <strong class="hi">오히려 좋다</strong><br>
+      '완료 기준'을 고쳐서 다시
+    </div>
+  </div>
+  <aside class="notes">[8분 구간 — 정리 2분은 다음 장에서] 실행 화면으로 전환하고 결과가 나오는 과정을 다 같이 본다. 첫 결과가 아쉬우면 기회다: "완료 기준을 더 명확히 줘볼까요?" 하고 지시문을 고쳐 재실행. 이때 각자 시트의 '완료 기준' 칸도 고쳐 쓰게 유도한다 — 검수→재위임 루프를 손으로 체험시키는 것.</aside>
+</section>
+
+<!-- ========== 54. 메시지 ========== -->
+<section class="slide">
+  <h1 style="font-size:54px">방금 하신 것이 위임→실행→검수→재위임 —<br>앞으로 여러분이 일하는 방식이다</h1>
+  <div class="body" style="justify-content:center">
+    <div class="loop" style="margin-top:0">
+      <span class="chip">위임</span><span class="arw">→</span>
+      <span class="chip">실행</span><span class="arw">→</span>
+      <span class="chip">검수</span><span class="arw">→</span>
+      <span class="chip">재위임</span>
+      <span class="back">⟲</span>
+    </div>
+    <div style="font-size:40px;line-height:1.7;color:#DCD9D1">
+      그 시트는 가져가세요 —<br>
+      <strong class="hi">내일 첫 위임의 템플릿입니다</strong>
+    </div>
+  </div>
+  <aside class="notes">실습 정리(2분). "방금 하신 게 위임, 실행, 검수, 재위임입니다. 이게 앞으로 여러분이 일하는 방식입니다." 손에 든 위임 프레임 시트를 들어 보이게 하고: "그 시트, 가져가세요. 내일 첫 위임에 그대로 쓰시면 됩니다."</aside>
+</section>
+
+<!-- ========== 55. 메시지 ========== -->
+<section class="slide">
+  <h1>기억하실 건 <span class="acc">세 문장</span>이면 충분합니다</h1>
+  <div class="body">
+    <ul class="plain" style="margin-top:16px">
+      <li style="margin-bottom:44px">① AI 활용 = 프롬프트가 아니라 <strong class="hi">위임</strong>이다</li>
+      <li style="margin-bottom:44px">② 실행이 싸지면 <strong class="hi">판단과 맥락</strong>이 비싸진다</li>
+      <li>③ 지니아는 그 증거 — <strong class="hi">이제 여러분 차례</strong>다</li>
+    </ul>
+  </div>
+  <aside class="notes">[목표 경과 3:20 — 마무리 5분] 세 문장을 하나씩 천천히 읽는다. 3시간의 전부가 이 세 줄로 압축된다는 것, 나머지는 잊어도 된다는 것. 마지막 문장에서 다음 장으로 자연스럽게: "그럼 그 '차례'를 지금 시작해 볼까요?"</aside>
+</section>
+
+<!-- ========== 56. 질문 (클로징) ========== -->
+<section class="slide t-question">
+  <div class="qmark">CLOSING</div>
+  <h1>내일 출근해서 딸깍 시킬 업무 하나 —<br>지금 선언하고 가세요</h1>
+  <div class="q-body" style="margin-top:56px">
+    <div style="font-size:48px;font-weight:800;color:var(--ink);line-height:1.5;margin-bottom:64px">
+      <span style="color:var(--accent)">"</span>저는 내일 <span class="blank" style="min-width:260px"></span>를<br>딸깍 시키겠습니다<span style="color:var(--accent)">"</span>
+    </div>
+    <div style="font-size:30px;color:var(--sub)">감사합니다 — 김나연 · nayeon@wishket.com</div>
+  </div>
+  <aside class="notes">[종료 목표 3:25] 오프닝 화이트보드 목록을 배경으로, 한 명씩 "저는 내일 ___를 딸깍 시키겠습니다" 선언하고 마친다. 처음 그 목록이 이제 다르게 보인다는 것을 스스로 확인하는 순간. 전원 선언이 끝나면 감사 인사로 종료.</aside>
+</section>
+
+</div><!-- /deck -->
+</div><!-- /stage -->
+
+<div id="bar"></div>
+<div id="counter">1 / 56</div>
+<div id="hint">← → / SPACE 넘기기 · N 발표자 노트</div>
+<div id="notes">
+  <div id="notesTitle"></div>
+  <div id="notesBody"></div>
+</div>
+
+<script>
+(function(){
+  var deck = document.getElementById('deck');
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var counter = document.getElementById('counter');
+  var bar = document.getElementById('bar');
+  var notes = document.getElementById('notes');
+  var notesTitle = document.getElementById('notesTitle');
+  var notesBody = document.getElementById('notesBody');
+  var cur = 0, notesOn = false;
+
+  function fit(){
+    var s = Math.min(window.innerWidth/1600, window.innerHeight/900);
+    deck.style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  function render(){
+    slides.forEach(function(el,k){ el.classList.toggle('active', k===cur); });
+    counter.textContent = (cur+1) + ' / ' + slides.length;
+    bar.style.width = ((cur+1)/slides.length*100) + '%';
+    var n = slides[cur].querySelector('.notes');
+    notesTitle.textContent = '발표자 노트 — ' + (cur+1) + ' / ' + slides.length;
+    notesBody.innerHTML = n ? n.innerHTML : '(노트 없음)';
+    if(history.replaceState) history.replaceState(null,'','#'+(cur+1));
+  }
+  function go(n){
+    cur = Math.max(0, Math.min(slides.length-1, n));
+    render();
+  }
+
+  window.addEventListener('keydown', function(e){
+    if(e.key==='ArrowRight' || e.key===' ' || e.key==='PageDown'){ e.preventDefault(); go(cur+1); }
+    else if(e.key==='ArrowLeft' || e.key==='PageUp'){ e.preventDefault(); go(cur-1); }
+    else if(e.key==='Home'){ e.preventDefault(); go(0); }
+    else if(e.key==='End'){ e.preventDefault(); go(slides.length-1); }
+    else if(e.key==='n' || e.key==='N' || e.key==='ㄴ'){
+      notesOn = !notesOn;
+      notes.classList.toggle('on', notesOn);
+    }
+  });
+
+  document.getElementById('stage').addEventListener('click', function(){ go(cur+1); });
+  notes.addEventListener('click', function(e){ e.stopPropagation(); });
+
+  var h = parseInt(location.hash.slice(1), 10);
+  go(isNaN(h) ? 0 : h-1);
+})();
+</script>
+</body>
+</html>

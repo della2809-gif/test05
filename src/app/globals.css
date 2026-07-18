@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+:root {
+  /* 배경 */
+  --background: #ffffff;
+  --surface: #f9fafb;
+  --surface-hover: #f3f4f6;
+
+  /* 텍스트 */
+  --foreground: #111827;
+  --foreground-secondary: #6b7280;
+  --foreground-tertiary: #9ca3af;
+
+  /* 브랜드 */
+  --primary: #10B981;
+  --primary-hover: #059669;
+  --primary-foreground: #ffffff;
+  --primary-subtle: #ECFDF5;
+
+  /* UI 요소 */
+  --border: #e5e7eb;
+  --border-hover: #d1d5db;
+  --input: #e5e7eb;
+  --ring: #10B981;
+
+  /* 시맨틱 */
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --accent: #f0fdf4;
+  --accent-foreground: #065f46;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --warning: #f59e0b;
+  --success: #10b981;
+  --info: #3b82f6;
+
+  /* 사이드바 */
+  --sidebar-bg: #f9fafb;
+  --sidebar-border: #e5e7eb;
+  --sidebar-item-hover: #f3f4f6;
+  --sidebar-item-active: #ECFDF5;
+  --sidebar-item-active-text: #065f46;
+
+  /* 채팅 버블 */
+  --bubble-user: #10B981;
+  --bubble-user-fg: #ffffff;
+  --bubble-assistant: #f3f4f6;
+  --bubble-assistant-fg: #111827;
+}
+
+.dark {
+  /* 배경 */
+  --background: #0f0f0f;
+  --surface: #1a1a1a;
+  --surface-hover: #222222;
+
+  /* 텍스트 */
+  --foreground: #f3f4f6;
+  --foreground-secondary: #9ca3af;
+  --foreground-tertiary: #6b7280;
+
+  /* 브랜드 */
+  --primary: #34D399;
+  --primary-hover: #10B981;
+  --primary-foreground: #022c22;
+  --primary-subtle: #022c22;
+
+  /* UI 요소 */
+  --border: #2a2a2a;
+  --border-hover: #3a3a3a;
+  --input: #2a2a2a;
+  --ring: #34D399;
+
+  /* 시맨틱 */
+  --muted: #1f1f1f;
+  --muted-foreground: #9ca3af;
+  --accent: #022c22;
+  --accent-foreground: #6ee7b7;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --warning: #d97706;
+  --success: #34d399;
+  --info: #60a5fa;
+
+  /* 사이드바 */
+  --sidebar-bg: #141414;
+  --sidebar-border: #222222;
+  --sidebar-item-hover: #1f1f1f;
+  --sidebar-item-active: #022c22;
+  --sidebar-item-active-text: #6ee7b7;
+
+  /* 채팅 버블 */
+  --bubble-user: #059669;
+  --bubble-user-fg: #f3f4f6;
+  --bubble-assistant: #1f1f1f;
+  --bubble-assistant-fg: #f3f4f6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-tertiary: var(--foreground-tertiary);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-hover: var(--border-hover);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-subtle: var(--primary-subtle);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+  --color-info: var(--info);
+  --color-sidebar-bg: var(--sidebar-bg);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-item-hover: var(--sidebar-item-hover);
+  --color-sidebar-item-active: var(--sidebar-item-active);
+  --color-sidebar-item-active-text: var(--sidebar-item-active-text);
+  --color-bubble-user: var(--bubble-user);
+  --color-bubble-user-fg: var(--bubble-user-fg);
+  --color-bubble-assistant: var(--bubble-assistant);
+  --color-bubble-assistant-fg: var(--bubble-assistant-fg);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Autofill override — 분홍/노랑 배경 제거 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px var(--background) inset;
+  -webkit-text-fill-color: var(--foreground);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* iOS safe area */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Hide scrollbar (mobile chip rows) */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile touch targets — min 44px */
+@media (max-width: 767px) {
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Exception: inline icon-only buttons in chat bubbles */
+  .touch-compact button,
+  .touch-compact a {
+    min-height: unset;
+    min-width: unset;
+  }
+}
