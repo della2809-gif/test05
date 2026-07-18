@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { headers } from "next/headers";
 import {
@@ -276,22 +277,20 @@ export default function Home() {
                   <span>MY WELLNESS NOTE</span>
                   <span>JUL · 2026</span>
                 </div>
-                <div className={styles.visualArtwork}>
-                  <div className={styles.artSun} />
-                  <div className={styles.artLeafOne} />
-                  <div className={styles.artLeafTwo} />
-                  <div className={styles.artFace}>
-                    <span />
-                    <span />
-                    <i />
-                  </div>
-                  <Sparkles className={styles.artSparkle} size={30} />
-                  <span className={styles.artWord}>GLOW</span>
+                <div className={`${styles.visualArtwork} ${styles.mascotArtwork}`}>
+                  <Image
+                    src="/wellset-mascot.png"
+                    alt="WELLSET 건강 자산 마스코트와 다양한 생활 루틴 포즈"
+                    width={1254}
+                    height={1254}
+                    className={styles.mascotImage}
+                    priority
+                  />
                 </div>
                 <div className={styles.visualFooter}>
                   <div>
-                    <strong>오늘의 작은 입금</strong>
-                    <span>7시간 수면 · 30분 걷기 · 물 6잔</span>
+                    <strong>건강 자산 메이트</strong>
+                    <span>건강한 루틴을 함께 만드는 WELLSET 친구</span>
                   </div>
                   <div className={styles.scoreCircle}>
                     <span>+23</span>
