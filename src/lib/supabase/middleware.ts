@@ -2,6 +2,11 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
+  // 디자인·추천 로직 확인용 공개 미리보기. 저장 기능은 페이지에서 비활성화한다.
+  if (request.nextUrl.pathname === "/content-ai-preview") {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(

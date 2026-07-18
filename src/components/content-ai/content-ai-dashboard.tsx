@@ -230,7 +230,11 @@ function CalendarCard({ item }: { item: CalendarRecommendation }) {
   );
 }
 
-export function ContentAiDashboard() {
+export function ContentAiDashboard({
+  canSaveStrategy = true,
+}: {
+  canSaveStrategy?: boolean;
+}) {
   const [mix, setMix] = useState<ContentMix>(DEFAULT_CONTENT_MIX);
   const [mode, setMode] = useState<RecommendationMode>("balanced");
   const [calendar, setCalendar] = useState<CalendarRecommendation[]>(() =>
@@ -323,10 +327,12 @@ export function ContentAiDashboard() {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={handleSaveStrategy} loading={saving}>
-            <Save className="h-4 w-4" />
-            전략 저장
-          </Button>
+          {canSaveStrategy && (
+            <Button variant="outline" onClick={handleSaveStrategy} loading={saving}>
+              <Save className="h-4 w-4" />
+              전략 저장
+            </Button>
+          )}
           <Button onClick={handleGenerate} disabled={total !== 100}>
             <RefreshCw className="h-4 w-4" />
             캘린더 생성
