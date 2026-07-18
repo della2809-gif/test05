@@ -279,8 +279,8 @@ export default function Home() {
                 </div>
                 <div className={`${styles.visualArtwork} ${styles.mascotArtwork}`}>
                   <Image
-                    src="/wellset-mascot.png"
-                    alt="WELLSET 건강 자산 마스코트와 다양한 생활 루틴 포즈"
+                    src="/wellset-mascot-portrait.png"
+                    alt="윙크하며 엄지를 든 WELLSET 건강 자산 마스코트"
                     width={1254}
                     height={1254}
                     className={styles.mascotImage}
