@@ -270,10 +270,11 @@ export async function POST(request: Request) {
     // PDF 파싱 + 임베딩은 응답 전송 후 백그라운드에서 실행
     // pdf-parse v2가 worker_threads를 사용해 Vercel에서 블로킹될 수 있으므로 after()로 분리
     if (record) {
+      const recordId = record.id;
       try {
         after(async () => {
           try {
-            console.log("[after] start, ext:", ext, "fileId:", record.id);
+            console.log("[after] start, ext:", ext, "fileId:", recordId);
             let parsedContent: string | null = syncParsedContent;
 
             if (ext === "pdf") {
@@ -302,27 +303,23 @@ export async function POST(request: Request) {
                 (globalThis as any).Path2D = class Path2D {};
               }
 
-              console.log("[after] importing pdf-parse");
-              const { PDFParse } = await import("pdf-parse");
-              console.log("[after] creating parser, buffer size:", buffer.length);
-              const parser = new PDFParse({ data: buffer });
-              console.log("[after] calling getText()");
-              const pdfData = await parser.getText();
-              await parser.destroy();
-              parsedContent = pdfData.text;
-              console.log("[after] getText done, text length:", parsedContent?.length);
+              console.warn(
+                "[after] PDF text extraction is deferred on the Cloudflare runtime.",
+              );
+              return;
+              if (!parsedContent) return;
 
               const quality = assessReferenceTextQuality(parsedContent, ext);
               if (!quality.ok) {
                 console.warn("[after] skipped low-quality PDF extraction:", {
-                  fileId: record.id,
+                  fileId: recordId,
                   reason: quality.reason,
                   metrics: quality.metrics,
                 });
                 if (!description) {
                   await (supabase as any).from("admin_files").update({
                     description: `[자동 추출 보류] ${quality.reason}`,
-                  }).eq("id", record.id);
+                  }).eq("id", recordId);
                 }
                 return;
               }
@@ -330,8 +327,8 @@ export async function POST(request: Request) {
               // 사용자가 설명을 입력하지 않은 경우 품질 검사를 통과한 파싱 결과만 description으로 저장
               if (!description && parsedContent) {
                 await (supabase as any).from("admin_files").update({
-                  description: parsedContent.slice(0, 1000),
-                }).eq("id", record.id);
+                  description: parsedContent!.slice(0, 1000),
+                }).eq("id", recordId);
               }
             }
 
@@ -340,7 +337,7 @@ export async function POST(request: Request) {
             const quality = assessReferenceTextQuality(parsedContent, ext);
             if (!quality.ok) {
               console.warn("[after] skipped low-quality reference extraction:", {
-                fileId: record.id,
+                fileId: recordId,
                 reason: quality.reason,
                 metrics: quality.metrics,
               });
@@ -353,7 +350,7 @@ export async function POST(request: Request) {
             await Promise.all(chunks.map((chunk, i) =>
               (supabase as any).from("document_chunks").insert({
                 source_type: "admin_files",
-                source_id: record.id,
+                source_id: recordId,
                 source_name: file.name,
                 chunk_text: chunk,
                 embedding: JSON.stringify(embeddings[i]),

@@ -77,11 +77,9 @@ export async function POST(request: Request) {
         if (ext === "txt") {
           content = await file.text();
         } else if (ext === "pdf") {
-          // eslint-disable-next-line @typescript-eslint/no-require-imports
-          const pdfParse = require("pdf-parse") as (buffer: Buffer) => Promise<{ text: string }>;
-          const pdfBuffer = Buffer.from(await file.arrayBuffer());
-          const pdfData = await pdfParse(pdfBuffer);
-          content = pdfData.text;
+          // Cloudflare Workers do not provide the DOM canvas primitives used by
+          // pdf-parse. Keep the uploaded file available and defer extraction.
+          content = undefined;
         } else if (ext === "xlsx") {
           const XLSX = await import("xlsx");
           const arrayBuffer = await file.arrayBuffer();
