@@ -30,5 +30,11 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "public-content-ai", "wellset-blog-site"]
+  "exclude": [
+    "node_modules",
+    "public-content-ai",
+    "wellset-blog-site",
+    "build",
+    "worker"
+  ]
 }

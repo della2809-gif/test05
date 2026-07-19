@@ -18,7 +18,9 @@ export async function GET() {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { data: profile } = await adminClient.from("profiles").select("role").eq("id", user.id).single();
-  if ((profile as any)?.role !== "admin") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if ((profile as { role?: string } | null)?.role !== "admin") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   const [
     { count: totalUsers },
