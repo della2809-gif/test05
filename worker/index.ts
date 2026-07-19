@@ -7,7 +7,7 @@ import handler from "vinext/server/app-router-entry";
 
 interface Env {
   ASSETS: Fetcher;
-  IMAGES: {
+  IMAGES?: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
         output(options: {
@@ -33,6 +33,14 @@ const worker = {
     const url = new URL(request.url);
 
     if (url.pathname === "/_vinext/image") {
+      if (!env.IMAGES) {
+        const source = url.searchParams.get("url");
+        if (!source || !source.startsWith("/")) {
+          return new Response("Invalid image URL", { status: 400 });
+        }
+        return env.ASSETS.fetch(new Request(new URL(source, request.url)));
+      }
+
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
       return handleImageOptimization(
         request,
