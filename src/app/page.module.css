@@ -12,6 +12,8 @@
   overflow: hidden;
   background: var(--cream);
   color: var(--ink);
+  font-family: "Pretendard Variable", Pretendard, "Noto Sans KR",
+    "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
 }
 
 .site * {
@@ -176,9 +178,9 @@
   max-width: 620px;
   margin: 26px 0 22px;
   font-size: clamp(3.4rem, 5.6vw, 5.7rem);
-  font-weight: 770;
+  font-weight: 850;
   letter-spacing: -0.07em;
-  line-height: 1.03;
+  line-height: 1.12;
 }
 
 .hero h1 em,
@@ -191,11 +193,29 @@
   letter-spacing: -0.05em;
 }
 
+.hero h1 em {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: inherit;
+  letter-spacing: inherit;
+}
+
+.heroHeart {
+  display: inline-block;
+  margin-left: 18px;
+  color: #cbd6ae;
+  font-size: 0.4em;
+  vertical-align: top;
+  transform: translateY(0.3em);
+}
+
 .heroDescription {
   max-width: 520px;
-  color: #4f5e56;
+  color: #343d38;
   font-size: 1.08rem;
-  line-height: 1.85;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.65;
 }
 
 .heroButtons {

@@ -239,13 +239,19 @@ export default function Home() {
                 HEALTH · BEAUTY · PASSIVE INCOME
               </div>
               <h1>
-                잘 사는 습관이
+                건강한 습관이
+                <span className={styles.heroHeart} aria-hidden="true">
+                  ♥
+                </span>
                 <br />
                 <em>나의 자산</em>이 되도록.
               </h1>
               <p className={styles.heroDescription}>
-                건강과 뷰티를 더 깊이 이해하고, 나만의 경험을 콘텐츠와
-                수익으로 연결하는 새로운 웰니스 라이프를 시작하세요.
+                웰셋은 건강과 뷰티를 더 깊이 이해하고,
+                <br />
+                나만의 경험을 콘텐츠와 수익으로 연결하는
+                <br />
+                새로운 웰니스 라이프를 시작하게 도와줘요.
               </p>
               <div className={styles.heroButtons}>
                 <a href="#articles" className={styles.primaryButton}>
