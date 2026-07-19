@@ -2,8 +2,16 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // WELLSET Journal is the public acquisition surface. It must remain
+  // available even before Supabase is connected to this hosting environment.
+  if (pathname === "/" || pathname === "/.rsc") {
+    return NextResponse.next({ request });
+  }
+
   // 디자인·추천 로직 확인용 공개 미리보기. 저장 기능은 페이지에서 비활성화한다.
-  if (request.nextUrl.pathname === "/content-ai-preview") {
+  if (pathname === "/content-ai-preview") {
     return NextResponse.next({ request });
   }
 
@@ -33,8 +41,6 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const pathname = request.nextUrl.pathname;
 
   // Auth 페이지 (로그인/회원가입) — 로그인 상태면 /chat으로
   const isAuthRoute = pathname.startsWith("/login") || pathname.startsWith("/signup");
