@@ -20,6 +20,23 @@ import {
   X,
 } from "lucide-react";
 import styles from "./page.module.css";
+import { HealthAssetCta } from "@/components/wellset/health-asset-cta";
+
+type JournalArticle = {
+  id: string;
+  category: string;
+  title: string;
+  excerpt: string;
+  readTime: string;
+  tone: "sage" | "coral" | "lavender";
+  icon: typeof Sparkles;
+  cta: {
+    label: string;
+    mode: "full" | "sleep" | "energy" | "metabolic" | "muscle" | "parent";
+    keywordId: string;
+    view?: "check" | "passport";
+  };
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const headerList = await headers();
@@ -61,33 +78,97 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const articles = [
   {
+    id: "article-energy-fatigue",
     category: "건강 자산",
-    title: "건강은 복리로 쌓인다: 오늘 시작하는 5가지 작은 입금",
+    title: "8시간 자도 피곤한 이유",
     excerpt:
-      "수면, 물, 걷기, 영양, 기록. 거창한 계획보다 매일 반복되는 작은 선택이 더 큰 자산이 됩니다.",
+      "수면 시간만으로 설명되지 않는 아침 피로와 에너지 리듬을 살펴봅니다.",
     readTime: "6분",
     tone: "sage",
-    icon: TrendingUp,
+    icon: Sparkles,
+    cta: {
+      label: "내 에너지자산 체크",
+      mode: "energy" as const,
+      keywordId: "morning_fatigue",
+    },
   },
   {
-    category: "뷰티 루틴",
-    title: "비싼 화장품보다 먼저, 피부 컨디션을 바꾸는 저녁 습관",
+    id: "article-sleep-score",
+    category: "수면 자산",
+    title: "갤럭시 헬스 수면점수 읽는 법",
     excerpt:
-      "윤기는 바르는 것만으로 완성되지 않습니다. 수면과 수분, 장 건강을 연결해 루틴을 다시 설계해요.",
+      "점수 하나보다 수면 리듬과 회복감을 함께 읽는 방법을 정리했습니다.",
     readTime: "5분",
     tone: "coral",
-    icon: Sparkles,
+    icon: MoonStar,
+    cta: {
+      label: "내 수면자산 확인",
+      mode: "sleep" as const,
+      keywordId: "sleep_score",
+    },
   },
   {
-    category: "AI & 콘텐츠",
-    title: "내 건강 경험을 신뢰받는 콘텐츠로 바꾸는 AI 질문법",
+    id: "article-parent-muscle",
+    category: "가족 건강",
+    title: "부모님의 근육이 줄고 있다는 신호",
     excerpt:
-      "경험은 살리고 과장은 덜어내는 프롬프트. 꾸준히 읽히는 웰니스 콘텐츠의 구조를 공개합니다.",
-    readTime: "8분",
+      "걷는 속도와 일상 동작에서 확인할 수 있는 근력 변화 신호를 살펴봅니다.",
+    readTime: "7분",
     tone: "lavender",
-    icon: Bot,
+    icon: HeartPulse,
+    cta: {
+      label: "부모님 건강체크 보내기",
+      mode: "parent" as const,
+      keywordId: "parent_muscle",
+    },
   },
-];
+  {
+    id: "article-postmeal-sleepiness",
+    category: "혈당 자산",
+    title: "식후 졸림이 반복되는 이유",
+    excerpt:
+      "식사량과 순서, 활동 습관을 중심으로 식후 컨디션을 점검합니다.",
+    readTime: "5분",
+    tone: "sage",
+    icon: Salad,
+    cta: {
+      label: "혈당자산 간편 체크",
+      mode: "metabolic" as const,
+      keywordId: "postmeal_sleepiness",
+    },
+  },
+  {
+    id: "article-health-compound",
+    category: "건강 자산",
+    title: "건강도 복리로 쌓인다",
+    excerpt:
+      "수면, 물, 걷기와 기록처럼 매일 반복되는 작은 선택이 건강자산이 됩니다.",
+    readTime: "6분",
+    tone: "coral",
+    icon: TrendingUp,
+    cta: {
+      label: "내 건강자산 잔액 확인",
+      mode: "full" as const,
+      keywordId: "health_compound",
+    },
+  },
+  {
+    id: "article-water-seven-days",
+    category: "생활 자산",
+    title: "7일 물 마시기",
+    excerpt:
+      "무리한 목표 대신 일주일 동안 수분 섭취를 기록하는 현실적인 방법입니다.",
+    readTime: "4분",
+    tone: "lavender",
+    icon: Sprout,
+    cta: {
+      label: "건강통장에 수분 기록 시작",
+      mode: "full" as const,
+      keywordId: "hydration_seven_days",
+      view: "passport" as const,
+    },
+  },
+] satisfies JournalArticle[];
 
 const categories = [
   {
@@ -196,6 +277,9 @@ export default function Home() {
             <a href="#categories">카테고리</a>
             <a href="#journey">웰셋 시작하기</a>
             <a href="#about">소개</a>
+            <a href="https://health-asset-coaching.fluffy-cow-3410.chatgpt.site/">
+              WELLSET 건강통장
+            </a>
           </nav>
 
           <div className={styles.headerActions}>
@@ -218,6 +302,9 @@ export default function Home() {
               <a href="#categories">카테고리</a>
               <a href="#journey">웰셋 시작하기</a>
               <a href="#about">소개</a>
+              <a href="https://health-asset-coaching.fluffy-cow-3410.chatgpt.site/">
+                WELLSET 건강통장
+              </a>
               <Link href="/login">로그인</Link>
               <Link href="/signup" className={styles.mobileCta}>
                 무료로 시작하기
@@ -254,10 +341,14 @@ export default function Home() {
                 새로운 웰니스 라이프를 시작하게 도와줘요.
               </p>
               <div className={styles.heroButtons}>
-                <a href="#articles" className={styles.primaryButton}>
-                  최신 글 둘러보기
-                  <ArrowRight size={18} />
-                </a>
+                <HealthAssetCta
+                  className={styles.primaryButton}
+                  label="내 건강자산 체크"
+                  mode="full"
+                  contentId="journal-home-hero"
+                  keywordId="health_asset"
+                  campaignId="journal_home"
+                />
                 <a href="#journey" className={styles.textButton}>
                   웰셋이 처음이라면
                   <MoveUpRight size={17} />
@@ -348,8 +439,8 @@ export default function Home() {
             {articles.map((article, index) => {
               const Icon = article.icon;
               return (
-                <article className={styles.articleCard} key={article.title}>
-                  <a href="#newsletter" aria-label={`${article.title} 읽기`}>
+                <article className={styles.articleCard} id={article.id} key={article.title}>
+                  <div className={styles.articleCardBody}>
                     <div
                       className={`${styles.articleArtwork} ${styles[article.tone]}`}
                     >
@@ -373,12 +464,17 @@ export default function Home() {
                       </div>
                       <h3>{article.title}</h3>
                       <p>{article.excerpt}</p>
-                      <span className={styles.readMore}>
-                        읽어보기
-                        <ArrowUpRight size={16} />
-                      </span>
+                      <HealthAssetCta
+                        className={styles.articleCta}
+                        label={article.cta.label}
+                        mode={article.cta.mode}
+                        view={article.cta.view}
+                        contentId={article.id}
+                        keywordId={article.cta.keywordId}
+                        campaignId="journal_article"
+                      />
                     </div>
-                  </a>
+                  </div>
                 </article>
               );
             })}
@@ -551,13 +647,16 @@ export default function Home() {
 
           <div className={styles.journeyCta}>
             <div>
-              <span>FREE STARTER GUIDE</span>
-              <strong>내 첫 웰니스 콘텐츠, 오늘 시작해 볼까요?</strong>
+              <span>WELLSET HEALTH ACCOUNT</span>
+              <strong>읽은 내용을 내 건강자산으로 연결해볼까요?</strong>
             </div>
-            <Link href="/signup">
-              무료 가이드 받기
-              <ArrowUpRight size={18} />
-            </Link>
+            <HealthAssetCta
+              label="5분 건강자산 체크"
+              mode="full"
+              contentId="journal-journey"
+              keywordId="health_journey"
+              campaignId="journal_journey"
+            />
           </div>
         </section>
 
@@ -616,6 +715,9 @@ export default function Home() {
               <a href="#articles">읽을거리</a>
               <a href="#categories">카테고리</a>
               <a href="#journey">웰셋 시작하기</a>
+              <a href="https://health-asset-coaching.fluffy-cow-3410.chatgpt.site/">
+                WELLSET 건강통장
+              </a>
             </div>
             <div>
               <strong>ACCOUNT</strong>

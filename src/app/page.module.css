@@ -619,7 +619,8 @@
   border-top: 1px solid var(--ink);
 }
 
-.articleCard > a {
+.articleCard > a,
+.articleCardBody {
   display: block;
   padding-top: 16px;
 }
@@ -742,6 +743,27 @@
   gap: 7px;
   font-size: 0.76rem;
   font-weight: 750;
+}
+
+.articleCta {
+  display: inline-flex;
+  margin-top: 22px;
+  padding: 11px 15px;
+  border-radius: 999px;
+  align-items: center;
+  gap: 7px;
+  background: var(--sage-dark);
+  color: white;
+  font-size: 0.76rem;
+  font-weight: 750;
+  transition:
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.articleCta:hover {
+  background: var(--ink);
+  transform: translateY(-2px);
 }
 
 .manifestoSection {
